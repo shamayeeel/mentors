@@ -23,8 +23,6 @@
             animation: transitionIn-Y-over 0.5s;
         }
     </style>
-    
-    
 </head>
 <body>
     <?php
@@ -115,7 +113,7 @@
                         <tr >
                             
                             <td colspan="1" class="nav-bar" >
-                            <p style="font-size: 23px;padding-left:12px;font-weight: 600;margin-left:20px;">     Dashboard</p>
+                            <p style="font-size: 23px;padding-left:12px;font-weight: 600;margin-left:20px;">Dashboard</p>
                           
                             </td>
                             <td width="25%">

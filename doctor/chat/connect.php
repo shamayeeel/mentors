@@ -10,9 +10,4 @@ $db_database	= 'messages';
 $db = new PDO('mysql:host='.$db_host.';dbname='.$db_database, $db_user, $db_pass);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$database= new mysqli("localhost","root","","edoc");
-    if ($database->connect_error){
-        die("Connection failed:  ".$database->connect_error);
-    }
-
 ?>
