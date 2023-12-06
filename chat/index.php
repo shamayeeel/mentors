@@ -1,28 +1,56 @@
 <?php
 session_start();
-if(isset($_SESSION["user"])){
-    if(($_SESSION["user"])=="" or $_SESSION['usertype']!='d'){
-        header("location: ../login.php");
-    }else{
-        $useremail=$_SESSION["user"];
-    }
 
-}else{
+if (empty($_SESSION["user"])) {
     header("location: ../login.php");
+    exit();
 }
+
 include("../chat/connect.php");
-    $userrow = $database->query("select * from doctor where docemail='$useremail'");
-    $userfetch=$userrow->fetch_assoc();
-    $userid= $userfetch["docid"];
-    $username=$userfetch["docname"];
-    $useremail=$userfetch["docemail"];
-    ?>
+
+$useremail = $_SESSION["user"];
+$appoid = isset($_SESSION['appoid']) ? $_SESSION['appoid'] : null;
+$userType = '';
+
+$doctorResult = $database->query("SELECT * FROM doctor WHERE docemail='$useremail'");
+$patientResult = $database->query("SELECT * FROM patient WHERE pemail='$useremail'");
+
+$doctorFetch = $doctorResult->fetch_assoc();
+$patientFetch = $patientResult->fetch_assoc();
+
+if ($doctorFetch) {
+    $userId = $doctorFetch["docid"];
+    $userName = $doctorFetch["docname"];
+    $userType = "doctor";
+} elseif ($patientFetch) {
+    $userId = $patientFetch["pid"];
+    $userName = $patientFetch["pname"];
+    $userType = "patient";
+} else {
+    header("location: ../login.php");
+    exit();
+}
+
+// Retrieve messages based on the user type
+if ($userType === "doctor") {
+    $appoid = isset($_GET['appoid']) ? (int)$_GET['appoid'] : 0;
+    $patientId = isset($_GET["patient_id"]) ? (int)$_GET["patient_id"] : 0;
+    $messagesResult = $database->query("SELECT * FROM messages WHERE appoid=$appoid AND user=$patientId");
+} elseif ($userType === "patient") {
+    $appoid = isset($_GET['appoid']) ? (int)$_GET['appoid'] : 0;
+    $doctorId = isset($_GET["doctor_id"]) ? (int)$_GET["doctor_id"] : 0;
+    $messagesResult = $database->query("SELECT * FROM messages WHERE appoid=$appoid AND user=$doctorId");
+}
+
+
+// Fetch and display messages
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Chat</title>
-    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="style1.css" type="text/css" media="screen" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,16 +60,16 @@ include("../chat/connect.php");
         
     <title>Dashboard</title>
     <style>
-        .dashbord-tables,.doctor-heade{
+        .dashbord-tables, .doctor-heade {
             animation: transitionIn-Y-over 0.5s;
         }
-        .filter-container{
-            animation: transitionIn-Y-bottom  0.5s;
-        }
-        .sub-table,#anim{
+        .filter-container {
             animation: transitionIn-Y-bottom 0.5s;
         }
-        .doctor-heade{
+        .sub-table, #anim {
+            animation: transitionIn-Y-bottom 0.5s;
+        }
+        .doctor-heade {
             animation: transitionIn-Y-over 0.5s;
         }
     </style>
@@ -67,14 +95,14 @@ include("../chat/connect.php");
                     $("#messages").animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
                 }
             });
-            
+
             var $container = $("#messages");
             $container.load('ajaxload.php?id=<?php echo 'a' ?>');
-            
+
             var refreshId = setInterval(function() {
                 $container.load('ajaxload.php?id=<?php echo 'a' ?>');
             }, 3000);
-            
+
             $("#userArea").submit(function() {
                 $.post('ajaxPost.php', $('#userArea').serialize(), function(data) {
                     $("#messages").append(data);
@@ -87,8 +115,8 @@ include("../chat/connect.php");
     </script>
 </head>
 <body>
-<section class = "main">
-<div class="container">
+    <section class="main">
+    <div class="container">
 <div class="menu">
             <table class="menu-container" border="0">
                 <tr>
@@ -99,7 +127,9 @@ include("../chat/connect.php");
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
+                                    <p class="profile-title"><?php 
+                                    if ($userType= "doctor") echo $userName;
+                                    else echo substr($username,0,13)  ?>..</p>
                                     <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
                                 </td>
                             </tr>
@@ -113,28 +143,28 @@ include("../chat/connect.php");
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord menu-active menu-icon-dashbord-active" >
-                        <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Dashboard</p></a></div></a>
+                        <a href="../doctor/index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Dashboard</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
+                        <a href="../appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
                     </td>
                 </tr>
                 
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">My Sessions</p></div></a>
+                        <a href="../schedule.php" class="non-style-link-menu"><div><p class="menu-text">My Sessions</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">My Patients</p></a></div>
+                        <a href="../patient.php" class="non-style-link-menu"><div><p class="menu-text">My Patients</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
+                        <a href="../settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
                 
@@ -147,11 +177,13 @@ include("../chat/connect.php");
                     <tr>
                         <td >
                             <h3>Welcome!</h3>
-                            <h1><?php echo $username  ?>.</h1>
+                            <h1><?php 
+                            if ($userType = "doctor") echo $userName;
+                            else echo substr($username,0,13)  ?>.</h1>
                             <p>Thanks for joinnig with us. We are always trying to get you a complete service<br>
                             You can view your dailly schedule, Reach Patients Appointment at home!<br><br>
                             </p>
-                            <a href="appointment.php" class="non-style-link"><button class="btn-primary btn" style="width:30%">View My Appointments</button></a>
+                            <a href="../appointment.php" class="non-style-link"><button class="btn-primary btn" style="width:30%">View My Appointments</button></a>
                             <br>
                             <br>
                         </td>
@@ -162,25 +194,26 @@ include("../chat/connect.php");
         <div id="messages">
             
         </div>
-        
-        <!-- post -->
-        <form border="10px" width="auto" style=" border-spacing: 10px;margin:10px;padding:10px;">
-            <div id="usercolor" style="border: none;width:95%" border="0" >
-                <?php
-                $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "argie";
-                ?>
-                <input type="text" name="user" placeholder="User" required="required" value="<?php echo $username; ?>" id="text" style="margin-bottom: 5px;" />
-                <input name="text" class="color" id="text" maxlength="6" value="000000" />
+
+                    <!-- Post Form HTML code here -->
+                    <form id="userArea">
+                        <div id="usercolor">
+                            <?php
+                            $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "argie";
+                            ?>
+                            <input type="text" name="user" placeholder="User" required="required" value="<?php echo $username; ?>" id="text" style="margin-bottom: 5px;" />
+                            <input name="text" class="color" id="text" maxlength="6" value="000000" />
+                        </div>
+                        <div id="messagesntry">
+                            <textarea id="output" name="messages" placeholder="Message" ></textarea>
+                        </div>
+                        <div id="messagesubmit">
+                            <input class="btn-primary btn" type="submit" value="Post message" id="submitmessage" />
+                        </div>
+                    </form>
+                </center>
             </div>
-            <div id="messagesntry">
-                <textarea id="output" name="messages" placeholder="Message"></textarea>
-            </div>
-            <div id="messagesubmit">
-                <input type="submit" value="Post message" id="submitmessage" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
+    </section>
 </body>
-</section>
 </html>

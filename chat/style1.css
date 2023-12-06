@@ -4,7 +4,7 @@ body {
 }
 
 p {
-	color: #cccccc;
+	color: #000000;
 	line-height: 22px;
 	padding: 0 0 10px;
 	margin: 20px 0 20px 0;
@@ -103,7 +103,7 @@ a.active.trigger {
 #submitmessage {
 	font-size: 18px;
 	border: 1px solid #EEEEEE;
-	background-color: #40F2FF;
+	background-color: #4063ff;
 	color: #FFFFFF;
 	padding-left: 10px;
 	padding-right: 10px;

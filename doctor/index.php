@@ -55,6 +55,7 @@
     //echo $username;
     
     ?>
+    <section class="main">
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
@@ -359,6 +360,6 @@
         </div>
     </div>
 
-
+    </section>
 </body>
 </html>

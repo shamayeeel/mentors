@@ -152,7 +152,10 @@ $(document).ready(function() {
 <!--post-->
 <form id="userArea">
 <div id="usercolor">
-<input type="text" name="user" placeholder="User" required="required" value="argie" id="text" style="margin-bottom: 5px;" />
+<?php
+                $username = isset($_SESSION["user"]) ? $_SESSION["user"] : "argie";
+                ?>
+<input type="text" name="user" placeholder="User" required="required" value="<?php echo $username; ?>" id="text" style="margin-bottom: 5px;" />
 <input name="text" class="color" id="text" maxlength="6" value="000000" />
 </div>
 <div id="messagesntry">

@@ -1,28 +1,22 @@
 <?php
 include('connect.php');
-$text = '#'.$_POST['text'];
-$message = $_POST['messages'];
-$user = $_POST['user'];
-$sql = "INSERT INTO messages (user,message,textcolor) VALUES (:sas,:asas,:asafs)";
-$q = $db->prepare($sql);
-$q->execute(array(':sas'=>$user,':asas'=>$message,':asafs'=>$text));
 
-echo '<div style="color:'.$text.'">'.$user .' : '. $message.'</div>'; 
-?>
-
-<?php
-include('connect.php');
-
+// Get user input
 $text = '#' . $_POST['text'];
 $message = $_POST['messages'];
 $user = $_POST['user'];
-$userId = $_POST['userId']; // Assuming you have userId in the form
-$doctorId = $_POST['doctorId']; // Assuming you have doctorId in the form
+$appoid = $_POST['appoid'];
 
-$sql = "INSERT INTO messages (user, message, textcolor, userId, doctorId) VALUES (:sas, :asas, :asafs, :userId, :doctorId)";
-$q = $db->prepare($sql);
-$q->execute(array(':sas' => $user, ':asas' => $message, ':asafs' => $text, ':userId' => $userId, ':doctorId' => $doctorId));
+// Insert data into 'messages' table
+$insertMessagesSQL = "INSERT INTO messages (user, message, textcolor, appoid) VALUES (:user, :message, :textcolor, :appoid)";
+$queryMessages = $db->prepare($insertMessagesSQL);
+$queryMessages->execute(array(':user' => $user, ':message' => $message, ':textcolor' => $text, ':appoid' => $appoid));
 
+// Insert data into 'edoc' table
+$insertEdocSQL = "INSERT INTO edoc (docid, message, appoid) VALUES (:docid, :message, :appoid)";
+$queryEdoc = $db->prepare($insertEdocSQL);
+$queryEdoc->execute(array(':docid' => $user, ':message' => $message, ':appoid' => $appoid));
+
+// Display the posted message
 echo '<div style="color:' . $text . '">' . $user . ' : ' . $message . '</div>';
 ?>
- 

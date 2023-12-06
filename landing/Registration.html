@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    
+    <div class="main">
+        <h1>Register Now</h1>
+
+        <!-- User Login -->
+        <div class="form-content" id="loginForm">
+            <form>
+                <h2>User Login</h2>
+                <div class="form-group">
+                    <small id="loginAlert"></small>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" >
+                    <small id="userAlert"></small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password">
+                    <small id="passAlert"></small>
+                </div>
+                <a onclick="showRegistrationForm()">No Account? Register Here.</a>
+                <div class="form-group">
+                    <button type="button" onclick="validateUserLogin()" id="loginBtn">Login</button>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- User Registration -->
+        <div class="main">
+         
+        
+            <!-- User Registration -->
+            <div class="main">
+                <h1>Register Now as a Mother</h1>
+            
+                <!-- User Registration -->
+                <div class="form-content" id="registrationForm">
+                    <form>
+                        <h2>User Registration</h2>
+                        <div class="form-group">
+                            <label for="fullName">Full Name:</label>
+                            <input type="text" id="fullName">
+                            <small id="fullNameAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" id="phoneNumber" maxlength="11">
+                            <small id="phoneNumberAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" class="form-control">
+                            <small id="emailAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address">
+                            <small id="addressAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password">
+                            <small id="passwordAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password:</label>
+                            <input type="password" id="confirmPassword">
+                            <small id="confirmPasswordAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">Date of Birth:</label>
+                            <input type="date" id="birthdate">
+                            <small id="birthdateAlert"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="topics">Topics to Discuss:</label><br>
+                            <input type="checkbox" name="topics" value="Parenting"> Parenting<br>
+                            <input type="checkbox" name="topics" value="Mental Health"> Mental Health<br>
+                            <input type="checkbox" name="topics" value="Education"> Education<br>
+                            <input type="checkbox" name="topics" value="Relationships"> Relationships<br>
+                            <input type="checkbox" name="topics" value="Self-care"> Self-care<br>
+                            <input type="checkbox" name="topics" value="Career"> Career<br>
+                            <input type="checkbox" name="topics" value="Life Challenges"> Life Challenges<br>
+                            <input type="checkbox" name="topics" value="Health & Wellness"> Health & Wellness<br>
+                            <input type="checkbox" name="topics" value="Parenting"> Other (Please explain below)<br>
+                        </div>
+                        <div class="form-group">
+                            <label for="otherTopic">Explain Other Topics:</label>
+                            <textarea id="otherTopic" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Experiences (e.g., years of motherhood, counseling experience):</label>
+                            <textarea id="experience" rows="4"></textarea>
+                        </div>
+            
+                        <a onclick="showLoginForm()"><- Back</a>
+                        <div class="form-group">
+                            <button type="button" onclick="validateUserRegistration()" id="registerAccount">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        
+        
+        
+        <!-- Create username and password -->
+        <div class="form-content" id="userPassForm">
+            <form>
+                <h2>Create your account</h2>
+                <div class="form-group">
+                    <label for="createUsername">Username:</label>
+                    <input type="text" id="createUsername">
+                    <small id="createUsernameAlert"></small>
+                </div>
+                <div class="form-group">
+                    <label for="createPassword">Password:</label>
+                    <input type="text" id="createPassword">
+                    <small id="createPasswordAlert"></small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="text" id="confirmPassword">
+                    <small id="confirmPasswordAlert"></small>
+                </div>
+                <a onclick="showRegistrationForm()"><- Back to registration form.</a>
+                <div class="form-group">
+                    <button type="button" onclick="validateCreateAccount()" id="createAccount">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Script JS -->
+    <script src="./script.js"></script>
+</body>
+</html>
